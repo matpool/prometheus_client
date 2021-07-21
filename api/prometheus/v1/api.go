@@ -29,8 +29,8 @@ import (
 
 	json "github.com/json-iterator/go"
 
-	"github.com/tobiasdai/prometheus_client/api"
-	"github.com/tobiasdai/prometheus_common/model"
+	"github.com/matpool/prometheus_client/api"
+	"github.com/matpool/prometheus_common/model"
 )
 
 func init() {
