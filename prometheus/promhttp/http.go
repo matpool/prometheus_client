@@ -142,13 +142,12 @@ func HandlerFor(reg prometheus.Gatherer, opts HandlerOpts) http.Handler {
 			}
 		}
 
-		//var contentType Format
-		//if opts.EnableOpenMetrics {
-		//	contentType = NegotiateIncludingOpenMetrics(req.Header)
-		//} else {
-		//	contentType = expfmt.Negotiate(req.Header)
-		//}
-		contentType := "text/plain; version=0.0.4; charset=utf-8"
+		var contentType Format
+		if opts.EnableOpenMetrics {
+			contentType = NegotiateIncludingOpenMetrics(req.Header)
+		} else {
+			contentType = Negotiate(req.Header)
+		}
 		header := rsp.Header()
 		header.Set(contentTypeHeader, string(contentType))
 

@@ -16,13 +16,13 @@ package prometheus
 import (
 	"errors"
 	"fmt"
-	"github.com/matpool/prometheus_common/model"
 	"sort"
 	"strings"
 
 	"github.com/cespare/xxhash/v2"
 	//nolint:staticcheck // Ignore SA1019. Need to keep deprecated package for compatibility.
 	"github.com/golang/protobuf/proto"
+	"github.com/matpool/prometheus_common/model"
 
 	dto "github.com/prometheus/client_model/go"
 )
