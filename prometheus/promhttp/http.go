@@ -40,9 +40,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/prometheus/common/expfmt"
-
-	"github.com/prometheus/client_golang/prometheus"
+	"github.com/matpool/prometheus_client/prometheus"
 )
 
 const (
@@ -144,11 +142,11 @@ func HandlerFor(reg prometheus.Gatherer, opts HandlerOpts) http.Handler {
 			}
 		}
 
-		var contentType expfmt.Format
+		var contentType Format
 		if opts.EnableOpenMetrics {
-			contentType = expfmt.NegotiateIncludingOpenMetrics(req.Header)
+			contentType = NegotiateIncludingOpenMetrics(req.Header)
 		} else {
-			contentType = expfmt.Negotiate(req.Header)
+			contentType = Negotiate(req.Header)
 		}
 		header := rsp.Header()
 		header.Set(contentTypeHeader, string(contentType))
@@ -165,7 +163,7 @@ func HandlerFor(reg prometheus.Gatherer, opts HandlerOpts) http.Handler {
 			w = gz
 		}
 
-		enc := expfmt.NewEncoder(w, contentType)
+		enc := NewEncoder(w, Format(contentType))
 
 		// handleError handles the error according to opts.ErrorHandling
 		// and returns true if we have to abort after the handling.
@@ -196,7 +194,7 @@ func HandlerFor(reg prometheus.Gatherer, opts HandlerOpts) http.Handler {
 				return
 			}
 		}
-		if closer, ok := enc.(expfmt.Closer); ok {
+		if closer, ok := enc.(Closer); ok {
 			// This in particular takes care of the final "# EOF\n" line for OpenMetrics.
 			if handleError(closer.Close()) {
 				return
